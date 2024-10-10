@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """ mypy validation """
-from typing import Tuple, List
+from typing import Tuple, List, Any
 
 
-def zoom_array(lst: Tuple[int, ...], factor: int = 2) -> List[int]:
-    """ Zoom in """
-    zoomed_in: List[int] = [
+def zoom_array(lst: Tuple[Any, ...], factor: int = 2) -> List[Any]:
+    zoomed_in: List[Any] = [
         item for item in lst
         for i in range(factor)
     ]
