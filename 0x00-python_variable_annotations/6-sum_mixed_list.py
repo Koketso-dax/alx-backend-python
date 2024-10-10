@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """ mixed list sum function """
+from typing import List, Union
 
 
-def sum_mixed_list(mxd_lst: list[int | float]) -> float:
-    """ returns the sum of a list of integers and floats """
+def sum_mixed_list(mxd_lst: List[Union[int, float]]) -> float:
+    """ sum mixed list """
     return sum(mxd_lst)
