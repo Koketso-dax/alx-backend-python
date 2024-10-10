@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
-""" mypy validation """
-from typing import Tuple, List, Any
+""" Type Checking  """
+from typing import Tuple, List
 
 
-def zoom_array(lst: Tuple[Any, ...], factor: int = 2) -> List[Any]:
-    zoomed_in: List[Any] = [
+def zoom_array(lst: Tuple, factor: int = 2) -> List:
+    """ Zoom Array """
+    zoomed_in: List = [
         item for item in lst
         for i in range(factor)
     ]
     return zoomed_in
 
 
-array: Tuple[int, ...] = (12, 72, 91)
+array = (12, 72, 91)
 
-zoom_2x: List[int] = zoom_array(array)
+zoom_2x = zoom_array(array)
 
-zoom_3x: List[int] = zoom_array(array, 3)
+zoom_3x = zoom_array(array, 3)
