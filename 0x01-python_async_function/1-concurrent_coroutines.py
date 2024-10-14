@@ -1,4 +1,4 @@
-#!/usr/bin/env/ python3
+#!/usr/bin/env python3
 """ Spawns async function wait_random n
 number of times and returns a list of
 all the delays """
@@ -13,7 +13,5 @@ async def wait_n(n: int, max_delay: int) -> List[float]:
     """
     spawns wait_random n times with the specified max_delay.
     """
-    wait_times = await asyncio.gather(
-        *tuple(map(lambda _: wait_random(max_delay), range(n)))
-    )
-    return sorted(wait_times)
+    tasks = [asyncio.create_task(wait_random(max_delay)) for _ in range(n)]
+    return [await task for task in asyncio.as_completed(tasks)]
