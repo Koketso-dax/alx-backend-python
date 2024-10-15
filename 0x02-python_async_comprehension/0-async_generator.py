@@ -6,10 +6,10 @@ between 0 and 10.
 """
 from asyncio import sleep
 from random import uniform
-from typing import AsyncGenerator
+from typing import Generator
 
 
-async def async_generator() -> AsyncGenerator[float, None]:
+async def async_generator() -> Generator[float, None, None]:
     """
     Loop 10x each time waiting for 1 second
     then yield a random number between 0 and 10.
