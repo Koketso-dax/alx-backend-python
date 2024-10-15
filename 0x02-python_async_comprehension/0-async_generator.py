@@ -4,8 +4,8 @@ Coroutene that loops 10x each time waiting
 for 1 second then yielding a random number
 between 0 and 10.
 """
-import random
 from asyncio import sleep
+from random import uniform
 from typing import AsyncGenerator
 
 
@@ -16,4 +16,4 @@ async def async_generator() -> AsyncGenerator[float, None]:
     """
     for _ in range(10):
         await sleep(1)
-        yield random.uniform(0, 10)
+        yield uniform(0, 10)
