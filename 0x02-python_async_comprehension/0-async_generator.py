@@ -3,13 +3,15 @@
 Coroutene that loops 10x each time waiting
 for 1 second then yielding a random number
 between 0 and 10.
+NB: the new  typing for this function shoudl be
+AsyncGenerator[float, None]
 """
 from asyncio import sleep
 from random import uniform
 from typing import Generator
 
 
-async def async_generator() -> Generator[float, None, None]:
+async def async_generator() -> Generator[float, None, None]: # type: ignore
     """
     Loop 10x each time waiting for 1 second
     then yield a random number between 0 and 10.
