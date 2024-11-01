@@ -29,12 +29,12 @@ class TestGithubOrgClient(unittest.TestCase):
             f"https://api.github.com/orgs/{org_name}")
         self.assertEqual(result, mock_response)
 
-
     @parameterized.expand([
         ("google", "https://api.github.com/orgs/google/repos"),
         ("abc", "https://api.github.com/orgs/abc/repos"),
     ])
     def test_public_repos_url(self, org_name, expected_url):
+        """Test public repos property value"""
         # Arrange
         mock_payload = {
             "repos_url": expected_url
@@ -48,7 +48,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch('client.get_json')
     def test_public_repos(self, mock_json):
-        """Test TestGithubOrgClient.test_public_repos
+        """TestGithubOrgClient.test_public_repos
         return the correct value
         """
 
