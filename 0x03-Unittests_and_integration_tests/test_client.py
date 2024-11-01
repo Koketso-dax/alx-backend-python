@@ -2,13 +2,11 @@
 """Test module for client.py"""
 import unittest
 from typing import Dict
-from requests import HTTPError
-from parameterized import parameterized, parameterized_class
+from parameterized import parameterized
 from fixtures import TEST_PAYLOAD
 from client import GithubOrgClient
 from unittest.mock import (
     MagicMock,
-    Mock,
     patch,
     PropertyMock,
 )
@@ -18,18 +16,18 @@ class TestGithubOrgClient(unittest.TestCase):
     """Tests for GithubOrgClient"""
 
     @parameterized.expand([
-        ("google", {'login': "google"}),
-        ("abc", {'login': "abc"})
+        ("google",),
+        ("abc",),
     ])
-    @patch("utils.get_json")
-    def test_org(self, org: str, resp: Dict,
-                 mocked_fxn: MagicMock) -> None:
-        """test org method"""
-
-        mocked_fxn.return_value = resp
-        client = GithubOrgClient(org)
-        client.org()
-        mocked_fxn.called_with_once(client.ORG_URL.format(org=org))
+    @patch('client.get_json')
+    def test_org(self, org_name, mock_get_json):
+        mock_response = {"key": "value"}
+        mock_get_json.return_value = mock_response
+        client = GithubOrgClient(org_name)
+        result = client.org
+        mock_get_json.assert_called_once_with(
+            f"https://api.github.com/orgs/{org_name}")
+        self.assertEqual(result, mock_response)
 
     def test_public_repos_url(self) -> None:
         """Tests the _public_repos_url property."""
