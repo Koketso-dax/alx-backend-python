@@ -29,18 +29,22 @@ class TestGithubOrgClient(unittest.TestCase):
             f"https://api.github.com/orgs/{org_name}")
         self.assertEqual(result, mock_response)
 
-    def test_public_repos_url(self) -> None:
-        """Tests the _public_repos_url property."""
-        with patch("client.GithubOrgClient.org",
-                   new_callable=PropertyMock) as mocked_org:
-            mocked_org.return_value = {
-                'repos_url': "https://api.github.com/users/google/repos"
-            }
-            client = GithubOrgClient("google")
-            self.assertEqual(
-                client._public_repos_url,
-                "https://api.github.com/users/google/repos"
-            )
+
+    @parameterized.expand([
+        ("google", "https://api.github.com/orgs/google/repos"),
+        ("abc", "https://api.github.com/orgs/abc/repos"),
+    ])
+    def test_public_repos_url(self, org_name, expected_url):
+        # Arrange
+        mock_payload = {
+            "repos_url": expected_url
+        }
+        # Act
+        with patch.object(GithubOrgClient, 'org', return_value=mock_payload):
+            client = GithubOrgClient(org_name)
+            result = client._public_repos_url
+        # Assert
+        self.assertEqual(result, expected_url)
 
     @patch("utils.get_json")
     def test_public_repos(self, mocked_fxn: MagicMock) -> None:
