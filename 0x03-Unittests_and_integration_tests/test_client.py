@@ -20,7 +20,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("abc",),
     ])
     @patch('client.get_json')
-    def test_org(self, org_name, mock_get_json):
+    def test_org(self, org_name, mock_get_json) -> None:
         mock_response = {"key": "value"}
         mock_get_json.return_value = mock_response
         client = GithubOrgClient(org_name)
@@ -33,7 +33,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ("google", "https://api.github.com/orgs/google/repos"),
         ("abc", "https://api.github.com/orgs/abc/repos"),
     ])
-    def test_public_repos_url(self, org_name, expected_url):
+    def test_public_repos_url(self, org_name, expected_url) -> None:
         """Test public repos property value"""
         # Arrange
         mock_payload = {
@@ -47,20 +47,23 @@ class TestGithubOrgClient(unittest.TestCase):
         self.assertEqual(result, expected_url)
 
     @patch('client.get_json')
-    def test_public_repos(self, mock_json):
-        """TestGithubOrgClient.test_public_repos
-        return the correct value
-        """
+    def test_public_repos(self, mock_get_json) -> None:
+        """Test GithubOrgClient.public_repos returns the correct value."""
 
+        # Arrange
         payloads = [{"name": "google"}, {"name": "Twitter"}]
-        mock_json.return_value = payloads
+        mock_get_json.return_value = payloads
+        mock_repos_url = "https://api.github.com/orgs/test/repos"
 
-        with patch('client.GithubOrgClient._public_repos_url') as mock_public:
-            mock_public.return_value = "hey there!"
+        # Act
+        with patch('client.GithubOrgClient._public_repos_url',
+                   new_callable=PropertyMock) as mock_public:
+            mock_public.return_value = mock_repos_url
             test_class = GithubOrgClient('test')
             result = test_class.public_repos()
 
-            expected = [p["name"] for p in payloads]
+            # Assert
+            expected = [x["name"] for x in payloads]
             self.assertEqual(result, expected)
-            mock_json.called_with_once()
-            mock_public.called_with_once()
+            mock_get_json.assert_called_once_with(mock_repos_url)
+            mock_public.assert_called_once()
