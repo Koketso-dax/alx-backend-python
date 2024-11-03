@@ -6,7 +6,6 @@ from parameterized import parameterized
 from fixtures import TEST_PAYLOAD
 from client import GithubOrgClient
 from unittest.mock import (
-    MagicMock,
     patch,
     PropertyMock,
 )
