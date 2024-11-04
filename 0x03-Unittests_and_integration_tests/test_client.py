@@ -2,12 +2,14 @@
 """Test module for client.py"""
 import unittest
 from typing import Dict
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
+from requests import HTTPError
 from fixtures import TEST_PAYLOAD
 from client import GithubOrgClient
 from unittest.mock import (
     patch,
     PropertyMock,
+    Mock
 )
 
 
