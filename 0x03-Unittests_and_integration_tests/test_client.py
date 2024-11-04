@@ -76,6 +76,7 @@ class TestGithubOrgClient(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected)
 
+
 @parameterized_class([
     {
         'org_payload': TEST_PAYLOAD[0][0],
