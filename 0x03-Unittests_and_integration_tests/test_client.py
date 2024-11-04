@@ -49,7 +49,7 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos(self, mock_get_json) -> None:
         """Test GithubOrgClient.public_repos returns the correct value."""
         # Arrange
-        payloads = TEST_PAYLOAD
+        payloads = [{"name": "google"}, {"name": "Twitter"}]
         mock_get_json.return_value = payloads
         mock_repos_url = "https://api.github.com/orgs/google/repos"
         # Act
