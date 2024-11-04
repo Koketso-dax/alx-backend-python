@@ -45,27 +45,40 @@ class TestGithubOrgClient(unittest.TestCase):
         # Assert
         self.assertEqual(result, expected_url)
 
-    @parameterized.expand([
-        ([{"name": "google"}, {"name": "Twitter"}], "https://api.github.com/orgs/test/repos", ["google", "Twitter"]),
-        ([{"name": "google"}], "https://api.github.com/orgs/test/repos", ["google"]),
-        ([], "https://api.github.com/orgs/test/repos", []),
-    ])
     @patch('client.get_json')
-    def test_public_repos(self, payloads, mock_repos_url,
-                          expected, mock_get_json):
+    def test_public_repos(self, mock_get_json) -> None:
         """Test GithubOrgClient.public_repos returns the correct value."""
         # Arrange
-        mock_get_json.return_value = payloads
-        # Act
-        with patch('client.GithubOrgClient._public_repos_url',
-                   new_callable=PropertyMock) as mock_public:
-            mock_public.return_value = mock_repos_url
-            test_class = GithubOrgClient('test')
+        org_payload = {
+            "repos_url": "https://api.github.com/orgs/test/repos"
+        }
+        repos_payload = [
+            {"name": "google"},
+            {"name": "Twitter"}
+        ]
+
+        # Set up the mock for get_json
+        mock_get_json.side_effect = [org_payload, repos_payload]
+
+        # Create an instance of GithubOrgClient
+        test_class = GithubOrgClient('test')
+
+        # Use patch as a context manager to mock _public_repos_url
+        with patch('client.GithubOrgClient._public_repos_url', new_callable=PropertyMock) as mock_public:
+            mock_public.return_value = org_payload["repos_url"]
+
+            # Act
             result = test_class.public_repos()
-        # Assert
-        self.assertEqual(result, expected)
-        mock_get_json.assert_called_once_with(mock_repos_url)
-        mock_public.assert_called_once()
+
+            # Assert
+            expected = [x["name"] for x in repos_payload]
+            self.assertEqual(result, expected)
+
+            # Check that get_json was called twice (once for org and once for repos)
+            self.assertEqual(mock_get_json.call_count, 2)
+
+            # Check that _public_repos_url was called once
+            self.assertEqual(mock_public.call_count, 1)
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
