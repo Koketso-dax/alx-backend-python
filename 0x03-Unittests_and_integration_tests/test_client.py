@@ -49,9 +49,9 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos(self, mock_get_json) -> None:
         """Test GithubOrgClient.public_repos returns the correct value."""
         # Arrange
-        payloads = [{"name": "google"}, {"name": "Twitter"}]
+        payloads = TEST_PAYLOAD
         mock_get_json.return_value = payloads
-        mock_repos_url = "https://api.github.com/orgs/test/repos"
+        mock_repos_url = "https://api.github.com/orgs/google/repos"
         # Act
         with patch('client.GithubOrgClient._public_repos_url',
                    new_callable=PropertyMock) as mock_public:
