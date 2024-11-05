@@ -72,6 +72,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "other_license"}}, "my_license", False),
     ])
     def test_has_license(self, repo, license_key, expected):
+        """ Test has license method"""
         # Act
         result = GithubOrgClient.has_license(repo, license_key)
         # Assert
@@ -97,6 +98,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         }
 
         def get_payload(url):
+            """ Tests get payload method"""
             if url in route_payload:
                 return Mock(**{'json.return_value': route_payload[url]})
             return HTTPError
