@@ -22,6 +22,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     @patch('client.get_json')
     def test_org(self, org_name, mock_get_json) -> None:
+        """ Test org retrieval for property """
         mock_response = {"key": "value"}
         mock_get_json.return_value = mock_response
         client = GithubOrgClient(org_name)
